@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<title>Prévia Loja Fibralata</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --navy:#312782; --ink:#17143d; --blue:#006db0; --blue-l:#008ad1; --gray:#5d5f73; --line:#e6e4ee;
+  --paper:#f6f4f0; --r:6px; --kraft:#efe5d7; --soft-blue:#e8f2fa; --white:#ffffff;
+  --font:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#e9e8ef;color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* ---------- barra da apresentação ---------- */
+.pres{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:#17143d;color:#e7e6f5;padding-inline:16px}
+.pres__in{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:16px;min-height:56px;flex-wrap:wrap;padding-block:8px}
+.pres__t{display:flex;flex-direction:column;line-height:1.2;margin-right:auto}
+.pres__t b{font-size:15px}
+.pres__t span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#9fdcff}
+.seg{display:flex;background:rgba(255,255,255,.08);border-radius:var(--r);padding:3px;gap:2px}
+.seg button{border:0;background:transparent;color:#cfcdea;font-weight:700;font-size:13px;padding:8px 14px;border-radius:4px;cursor:pointer;min-height:36px}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--ink)}
+.stage{padding:24px 16px 64px}
+.device{margin:0 auto;max-width:1366px;background:#fff;box-shadow:0 20px 60px -24px rgba(23,20,61,.35);border-radius:var(--r);overflow:hidden;transition:max-width .35s ease}
+.device.is-mobile{max-width:390px;border-radius:28px;border:10px solid #17143d}
+.caption{max-width:1366px;margin:0 auto 14px;font-size:13px;color:var(--gray);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.caption b{color:var(--ink)}
+
+/* ---------- LOJA ---------- */
+.store{container-type:inline-size;container-name:store;background:#fff;font-size:14px}
+.w{max-width:1200px;margin:0 auto;padding-inline:24px}
+.top{background:var(--paper);color:var(--gray);font-size:12px}
+.top .w{display:flex;justify-content:space-between;align-items:center;min-height:34px;gap:12px}
+.top a{color:var(--navy);font-weight:700}
+.hd .w{display:flex;align-items:center;gap:36px;min-height:88px}
+.logo{display:flex;flex-direction:column;gap:3px;flex:none}
+.logo img{width:176px;height:auto}
+.logo span{font-family:var(--mono);font-size:9.5px;letter-spacing:.32em;color:var(--blue);padding-left:46px}
+.search{flex:1;display:flex;align-items:center;gap:10px;background:#f3f2f7;border-radius:var(--r);height:44px;padding:0 16px 0 20px;color:var(--gray)}
+.search span{flex:1;font-size:14px}
+.icons{display:flex;gap:26px}
+.icons a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11.5px;font-weight:600;color:var(--ink);position:relative}
+.icons svg{width:22px;height:22px}
+.badge{position:absolute;top:-5px;right:6px;background:var(--blue);color:#fff;font-size:9.5px;font-weight:800;width:16px;height:16px;border-radius:50%;display:grid;place-items:center}
+.nv{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.nv .w{display:flex;justify-content:center;gap:30px;min-height:46px;align-items:center;font-weight:600;font-size:13.5px;color:var(--ink)}
+.nv a:hover{color:var(--blue)}
+.mobile-bar{display:none}
+
+.slider{position:relative;background:#fff;border-bottom:1px solid var(--line)}
+.slide{display:none}
+.slide.on{display:block}
+.slide .d{width:100%;aspect-ratio:1920/600;object-fit:cover}
+.slide .m{display:none;width:100%;aspect-ratio:1/1;object-fit:cover}
+.dots{position:absolute;left:0;right:0;bottom:14px;display:flex;justify-content:center;gap:8px}
+.dots button{width:26px;height:4px;border:0;border-radius:2px;background:rgba(23,20,61,.18);cursor:pointer;padding:0}
+.dots button[aria-selected="true"]{background:var(--navy);width:40px}
+.arrow{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:var(--r);border:1px solid var(--line);background:#fff;color:var(--ink);font-size:22px;cursor:pointer;display:grid;place-items:center}
+.arrow.l{left:20px}.arrow.r{right:20px}
+
+.svc{border-bottom:1px solid var(--line)}
+.svc .w{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;padding-block:26px}
+.svc div.i{display:flex;gap:14px;align-items:center}
+.svc svg{width:30px;height:30px;flex:none;color:var(--blue)}
+.svc b{display:block;font-size:13px;letter-spacing:.03em}
+.svc small{color:var(--gray);font-size:13px}
+
+.sec{padding-block:56px}
+.sec h2{margin:0 0 28px;text-align:center;font-size:26px;font-weight:800;letter-spacing:-.02em}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 22px}
+.card{display:flex;flex-direction:column;gap:8px;text-align:center}
+.pi{position:relative;aspect-ratio:1;border-radius:var(--r);overflow:hidden;background:#fff}
+.pi img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.card:hover .pi img{transform:scale(1.03)}
+.off{position:absolute;top:10px;left:10px;background:var(--soft-blue);color:var(--blue);font-size:11px;font-weight:800;padding:4px 8px;border-radius:4px}
+.esg{position:absolute;top:10px;left:10px;background:#fff;color:var(--gray);font-size:11px;font-weight:800;padding:4px 8px;border-radius:4px;border:1px solid var(--line)}
+.card p{margin:4px 0 0;font-size:13.5px;line-height:1.35;min-height:36px}
+.pr{display:flex;gap:8px;justify-content:center;align-items:baseline}
+.was{font-size:12.5px;color:var(--gray);text-decoration:line-through}
+.now{font-size:18px;font-weight:800}
+.inst{font-size:12px;color:var(--gray)}
+
+.cats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+.cat{display:flex;flex-direction:column;gap:12px}
+.cat .ci{aspect-ratio:4/3;border-radius:var(--r);overflow:hidden;background:#fff;border:1px solid var(--line)}
+.cat .ci img{width:100%;height:100%;object-fit:cover}
+.cat b{font-size:15px}
+.cat span{font-size:12.5px;color:var(--blue);font-weight:700}
+
+.video{background:var(--paper)}
+.video .w{display:grid;grid-template-columns:1fr 1.4fr;gap:48px;align-items:center;padding-block:56px}
+.eb{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.video h3{margin:8px 0 10px;font-size:28px;letter-spacing:-.02em;line-height:1.1}
+.video p{margin:0;color:var(--gray);line-height:1.6;max-width:44ch}
+.vthumb{position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:#fff;border:1px solid var(--line)}
+.vthumb img{width:100%;height:100%;object-fit:cover}
+.play{position:absolute;inset:0;margin:auto;width:64px;height:64px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 8px 24px -8px rgba(23,20,61,.4)}
+.play svg{width:22px;height:22px;color:var(--navy);margin-left:3px}
+
+.news{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.news .w{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding-block:40px}
+.news h3{margin:6px 0 4px;font-size:22px}
+.news p{margin:0;color:var(--gray)}
+.nform{display:flex;gap:10px}
+.nform input{flex:1;min-width:0;height:48px;border-radius:var(--r);border:1px solid #d6d4e2;padding:0 20px;font:inherit;font-size:14px}
+.btn{height:48px;padding:0 26px;border-radius:var(--r);border:0;background:var(--navy);color:#fff;font-weight:800;font-size:13.5px;letter-spacing:.04em;cursor:pointer}
+
+.welcome .w{display:grid;grid-template-columns:220px 1fr;gap:48px;align-items:center;padding-block:48px}
+.welcome img{width:190px}
+.welcome h3{margin:0 0 8px;font-size:18px}
+.welcome p{margin:0;color:#3a3860;line-height:1.65;max-width:72ch}
+.welcome a{color:var(--blue);font-weight:700}
+
+.ft{background:var(--paper);border-top:1px solid var(--line)}
+.cmyk{display:flex;height:3px}.cmyk i{flex:1}.cmyk i:nth-child(1){background:#00a3e0}.cmyk i:nth-child(2){background:#e5007e}.cmyk i:nth-child(3){background:#ffd400}.cmyk i:nth-child(4){background:#1a1a1a}
+.ft .w{display:grid;grid-template-columns:1.3fr 1fr 1.2fr 1.1fr;gap:32px;padding-block:44px 20px;font-size:13px;color:#3a3860}
+.ft h4{margin:0 0 12px;font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray)}
+.ft ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{background:#fff;border:1px solid var(--line);border-radius:4px;padding:5px 9px;font-size:12px;font-weight:700}
+.ft .bt{grid-column:1/-1;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;color:var(--gray);font-size:12px;gap:12px;flex-wrap:wrap}
+.ph{background:#fff3cd;color:#6b4e00;border-radius:4px;padding:0 4px;font-weight:700}
+
+/* produto */
+.crumb{font-size:12px;color:var(--gray);padding-block:18px}
+.crumb a:hover{color:var(--blue)}
+.pd{display:grid;grid-template-columns:84px minmax(0,1.05fr) minmax(0,1fr);gap:24px 36px;align-items:start;padding-bottom:48px}
+.thumbs{display:flex;flex-direction:column;gap:10px}
+.thumbs button{padding:0;border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden;background:#fff;cursor:pointer;aspect-ratio:1}
+.thumbs button[aria-pressed="true"]{border-color:var(--navy)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.main-img{position:relative;aspect-ratio:1;border-radius:var(--r);overflow:hidden;background:#fff;border:1px solid var(--line)}
+.main-img img{width:100%;height:100%;object-fit:cover}
+.dimtag{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.92);font-family:var(--mono);font-size:11px;padding:5px 9px;border-radius:4px;border:1px solid var(--line)}
+.info{display:flex;flex-direction:column;gap:16px}
+.info h1{margin:0;font-size:28px;line-height:1.15;letter-spacing:-.02em;font-weight:800}
+.price .was{font-size:15px}
+.price .now{font-size:32px}
+.small{font-size:12.5px;color:var(--gray)}
+.lbl{font-size:12.5px;font-weight:700;display:block;margin-bottom:8px}
+.opts{display:flex;gap:8px;flex-wrap:wrap}
+.opts button{border:1px solid #d6d4e2;background:#fff;border-radius:var(--r);padding:10px 14px;font-weight:700;font-size:13px;cursor:pointer;min-height:44px}
+.opts button[aria-pressed="true"]{border-color:var(--navy);box-shadow:inset 0 0 0 1px var(--navy);color:var(--navy)}
+.buy{display:flex;gap:10px}
+.qty{display:flex;align-items:center;border:1px solid #d6d4e2;border-radius:var(--r);height:50px}
+.qty button{width:44px;height:48px;border:0;background:transparent;font-size:18px;cursor:pointer}
+.qty span{width:26px;text-align:center;font-weight:700}
+.buy .btn{flex:1;height:50px}
+.ship{border:1px solid var(--line);border-radius:var(--r);padding:14px;display:grid;gap:10px}
+.ship div{display:flex;gap:8px}
+.ship input{flex:1;min-width:0;height:42px;border:1px solid #d6d4e2;border-radius:var(--r);padding:0 12px;font:inherit}
+.ship button{height:42px;padding:0 16px;border-radius:var(--r);border:1px solid var(--navy);background:#fff;color:var(--navy);font-weight:800;font-size:12px;letter-spacing:.05em;cursor:pointer}
+.b2b{background:var(--kraft);border-radius:var(--r);padding:12px 14px;font-size:13px;color:#3a3860}
+.b2b a{color:var(--navy);font-weight:800}
+.desc{background:var(--paper)}
+.desc .w{display:grid;grid-template-columns:1.1fr 1fr;gap:44px;padding-block:52px;align-items:start}
+.desc h3{margin:0 0 12px;font-size:18px}
+.desc p{margin:0 0 10px;line-height:1.65;color:#2e2c4d}
+.tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;font-size:13.5px}
+.tbl th,.tbl td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line)}
+.tbl tr:last-child th,.tbl tr:last-child td{border-bottom:0}
+.tbl thead th{font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);background:#faf9f7}
+.tbl tbody th{color:var(--gray);font-weight:600;width:40%}
+.tbl td{font-variant-numeric:tabular-nums}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tags span{border:1px solid var(--line);background:#fff;border-radius:4px;padding:6px 11px;font-size:12.5px;font-weight:600}
+.stack{display:grid;gap:26px}
+
+/* guia */
+.guide{padding:48px 0 64px}
+.guide h1{margin:6px 0 10px;font-size:34px;letter-spacing:-.03em;line-height:1.08}
+.guide .lead{color:var(--gray);font-size:16px;line-height:1.6;max-width:70ch;margin:0 0 28px}
+.pal{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;margin-bottom:36px}
+.sw{display:grid;gap:6px;font-size:12.5px;color:var(--gray)}
+.sw i{height:72px;border-radius:var(--r);border:1px solid rgba(0,0,0,.06)}
+.sw b{color:var(--ink);font-size:13px}
+.sw code{font-family:var(--mono);font-size:12px;color:var(--ink)}
+.ba{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-bottom:36px}
+.ba figure{margin:0;display:grid;gap:8px}
+.ba img{border-radius:var(--r);border:1px solid var(--line);aspect-ratio:4/3;object-fit:cover;object-position:top;width:100%}
+.ba figcaption{font-size:12.5px;color:var(--gray)}
+.rows{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.box{border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.box h3{margin:0 0 10px;font-size:15px}
+.kv{display:grid;grid-template-columns:1fr auto;gap:0;font-size:13.5px}
+.kv span{padding:9px 0;border-bottom:1px solid var(--line)}
+.kv span:nth-last-child(-n+2){border-bottom:0}
+.kv code{font-family:var(--mono);font-size:12px;background:var(--soft-blue);color:var(--blue);padding:3px 7px;border-radius:5px;justify-self:end;align-self:center}
+.box ul{margin:0;padding-left:18px;line-height:1.7;font-size:13.5px}
+
+.page{display:none}.page.on{display:block}
+
+/* ---------- celular (container query: vale no modo Celular e em telas pequenas) ---------- */
+@container store (max-width: 760px){
+  .w{padding-inline:16px}
+  .top{display:none}
+  .hd .w{min-height:60px;gap:8px;justify-content:space-between}
+  .hd .search,.hd .icons a:not(.cart),.nv{display:none}
+  .logo img{width:140px}.logo span{padding-left:36px;font-size:8px}
+  .mobile-bar{display:block;padding:0 16px 12px}
+  .mobile-bar .search{height:42px}
+  .menu-ic{display:grid !important}
+  .slide .d{display:none}.slide .m{display:block}
+  .arrow{display:none}
+  .svc .w{grid-template-columns:1fr;gap:12px;padding-block:18px}
+  .sec{padding-block:36px}.sec h2{font-size:21px;margin-bottom:20px}
+  .grid4{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 14px}
+  .now{font-size:16px}
+  .cats{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .video .w,.news .w,.welcome .w,.desc .w,.rows,.ba{grid-template-columns:1fr;gap:18px}
+  .video .w{padding-block:36px}.video h3{font-size:22px}
+  .welcome img{width:150px}
+  .ft .w{grid-template-columns:1fr;gap:22px}
+  .pd{grid-template-columns:1fr;gap:16px}
+  .thumbs{flex-direction:row;order:2}.thumbs button{width:64px}
+  .main-img{order:1}.info{order:3}
+  .info h1{font-size:22px}.price .now{font-size:26px}
+  .pal{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .guide h1{font-size:26px}
+}
+.menu-ic{display:none;width:44px;height:44px;border:0;background:transparent;place-items:center;color:var(--ink)}
+@media (max-width:560px){.pres__in{gap:10px}.seg button{padding:8px 10px;font-size:12px}}
+@media (prefers-reduced-motion: reduce){*{transition:none !important}}
+</style>
+
+</head>
+<body>
+<div class="pres">
+  <div class="pres__in">
+    <div class="pres__t"><b>Loja Fibralata · proposta visual</b><span>Nuvemshop · tema Amazonas · mesma estrutura</span></div>
+    <div class="seg" role="group" aria-label="Página">
+      <button type="button" data-page="home" aria-pressed="true">Home</button>
+      <button type="button" data-page="produto" aria-pressed="false">Produto</button>
+      <button type="button" data-page="guia" aria-pressed="false">Cores e ajustes</button>
+    </div>
+    <div class="seg" role="group" aria-label="Dispositivo">
+      <button type="button" data-dev="desktop" aria-pressed="true">Desktop</button>
+      <button type="button" data-dev="mobile" aria-pressed="false">Celular</button>
+    </div>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="caption"><span id="cap"><b>Home</b> · mesma ordem de seções da loja atual, com a identidade do novo site</span><span>Imagens ilustrativas · preços da loja em 28/09/2026</span></div>
+  <div class="device" id="device">
+    <div class="store">
+      <!-- topo comum -->
+      <div class="top"><div class="w"><span>Tubolatas em pequenas tiragens, com ou sem rótulo</span><span>Precisa de volume? <a href="#guia">Orçamento para empresas →</a></span></div></div>
+      <header class="hd"><div class="w">
+        <button class="menu-ic" type="button" aria-label="Abrir menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+        <a class="logo" href="#home" data-go="home"><img src="img/logo-cor.png" alt="Fibralata® Embalagem Inteligente" width="176" height="42"><span>LOJA ON-LINE</span></a>
+        <div class="search"><span>O que você está buscando?</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></div>
+        <div class="icons">
+          <a href="#home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Atendimento</a>
+          <a href="#home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Minha conta</a>
+          <a class="cart" href="#home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3h2l2.4 12.2a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 2-1.5L22 7H6"/><circle cx="9" cy="20.5" r="1"/><circle cx="18" cy="20.5" r="1"/></svg>Carrinho<span class="badge">0</span></a>
+        </div>
+      </div></header>
+      <div class="mobile-bar"><div class="search"><span>O que você está buscando?</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></div></div>
+      <nav class="nv" aria-label="Menu da loja"><div class="w"><a href="#home" data-go="home">Início</a><a href="#produto" data-go="produto">Produtos ▾</a><a href="#home">Contato</a><a href="#home">Quem Somos</a><a href="#home">Como Comprar</a><a href="#home">Perguntas Frequentes</a><a href="#home">Trocas e Devoluções</a><a href="#home">Privacidade</a></div></nav>
+
+      <!-- ================= HOME ================= -->
+      <main class="page on" id="p-home">
+        <section class="slider" aria-roledescription="carrossel" aria-label="Destaques">
+          <div class="slide on"><img class="d" src="img/banner-1-d.jpg" alt="Seu panetone já chega presente — ver soluções para o Natal" width="1920" height="600"><img class="m" src="img/banner-1-m.jpg" alt="Seu panetone já chega presente" width="600" height="600"></div>
+          <div class="slide"><img class="d" src="img/banner-2-d.jpg" alt="Gourmet que se destaca na prateleira — cafés, chás e chocolates" width="1920" height="600"><img class="m" src="img/banner-2-m.jpg" alt="Gourmet que se destaca na prateleira" width="600" height="600"></div>
+          <div class="slide"><img class="d" src="img/banner-3-d.jpg" alt="Brindes que ficam na memória — brindes corporativos" width="1920" height="600"><img class="m" src="img/banner-3-m.jpg" alt="Brindes que ficam na memória" width="600" height="600"></div>
+          <button class="arrow l" type="button" aria-label="Banner anterior" data-sl="-1">‹</button>
+          <button class="arrow r" type="button" aria-label="Próximo banner" data-sl="1">›</button>
+          <div class="dots" role="tablist"><button type="button" aria-selected="true" aria-label="Banner 1"></button><button type="button" aria-selected="false" aria-label="Banner 2"></button><button type="button" aria-selected="false" aria-label="Banner 3"></button></div>
+        </section>
+
+        <section class="svc"><div class="w">
+          <div class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg><div><b>TIRE SUAS DÚVIDAS</b><small>Fale com a gente pelo WhatsApp</small></div></div>
+          <div class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><div><b>PAGUE COMO QUISER</b><small>Pix, boleto ou cartão em até 12x</small></div></div>
+          <div class="i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg><div><b>COMPRE COM SEGURANÇA</b><small>Seus dados sempre protegidos</small></div></div>
+        </div></section>
+
+        <section class="sec"><div class="w"><h2>Produtos em Destaque</h2><div class="grid4" data-list="ofertas"></div></div></section>
+
+        <section class="sec" style="padding-top:0"><div class="w"><div class="cats">
+          <a class="cat" href="#home"><div class="ci"><img src="img/panetones.jpg" alt="Tubolatas de Natal" loading="lazy"></div><b>Tubolata de Natal</b><span>Ver produtos →</span></a>
+          <a class="cat" href="#home"><div class="ci"><img src="img/chocolates-e-pascoa.jpg" alt="Tubolatas para Páscoa" loading="lazy"></div><b>Tubolata para Páscoa</b><span>Ver produtos →</span></a>
+          <a class="cat" href="#home"><div class="ci"><img src="img/tubolata-sem-rotulo-6x22.jpg" alt="Fibralata sem rótulo" loading="lazy"></div><b>Fibralata Sem Rótulo</b><span>Ver produtos →</span></a>
+          <a class="cat" href="#home"><div class="ci"><img src="img/brindes-corporativos.jpg" alt="Tubolatas para brindes" loading="lazy"></div><b>Brindes</b><span>Ver produtos →</span></a>
+        </div></div></section>
+
+        <section class="video"><div class="w">
+          <div><span class="eb">Passo a passo</span><h3>Como rotular uma embalagem?</h3><p>Assista ao vídeo e veja como aplicar o rótulo na sua tubolata Fibralata® sem rugas nem bolhas.</p></div>
+          <div class="vthumb"><img src="img/com-rotulo-pequena-tiragem.jpg" alt="Capa do vídeo: tubolata com rótulo" loading="lazy"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>
+        </div></section>
+
+        <section class="sec"><div class="w"><h2>Destaques</h2><div class="grid4" data-list="destaques"></div></div></section>
+
+        <section class="news"><div class="w">
+          <div><span class="eb">Newsletter</span><h3>Receba todas as promoções</h3><p>Cadastre seu e-mail e receba ofertas e novidades.</p></div>
+          <form class="nform" onsubmit="event.preventDefault()"><label class="sr" for="nl" style="position:absolute;left:-9999px">E-mail</label><input id="nl" type="email" placeholder="Seu e-mail"><button class="btn" type="submit">INSCREVER</button></form>
+        </div></section>
+
+        <section class="welcome"><div class="w">
+          <img src="img/logo-cor.png" alt="Fibralata®" width="190" height="45">
+          <div><h3>Fibralata Loja On-line</h3><p>A Fibralata® é a marca registrada de tubolatas da Gráfica Studio A, de Santo André (SP), com mais de 60 anos de know-how. Aqui você compra tubolatas em pequenas tiragens, com ou sem rótulo, prontas para personalizar. Precisa de volume ou medida especial? <a href="#guia">Peça um orçamento</a>.</p></div>
+        </div></section>
+      </main>
+
+      <!-- ================= PRODUTO ================= -->
+      <main class="page" id="p-produto">
+        <div class="w">
+          <nav class="crumb" aria-label="Você está em"><a href="#home" data-go="home">Início</a> › <a href="#home">Fibralata Sem Rótulo</a> › <a href="#home">Fibralata 6 cm de Diâmetro</a> › Cofrinho</nav>
+          <div class="pd">
+            <div class="thumbs" role="group" aria-label="Fotos do produto">
+              <button type="button" aria-pressed="true" data-img="img/cofrinho-1.jpg"><img src="img/cofrinho-1.jpg" alt="Vista frontal"></button>
+              <button type="button" aria-pressed="false" data-img="img/cofrinho-2.jpg"><img src="img/cofrinho-2.jpg" alt="Em escala"></button>
+              <button type="button" aria-pressed="false" data-img="img/cofrinho-3.jpg"><img src="img/cofrinho-3.jpg" alt="Personalizado com rótulo"></button>
+            </div>
+            <div class="main-img"><img id="mainimg" src="img/cofrinho-1.jpg" alt="Embalagem tubolata para cofrinho, papel reciclado com tampa preta e fenda" width="800" height="800"><span class="off">-10%</span><span class="dimtag">Ø 6 × 10 cm</span></div>
+            <div class="info">
+              <h1>Embalagem Tubolata para Cofrinho da Fibralata</h1>
+              <div class="price"><div class="pr" style="justify-content:flex-start"><span class="was" id="was">R$45,00</span><span class="now" id="price">R$40,50</span></div>
+                <div style="margin-top:4px;font-size:13.5px"><b id="inst">9 x de R$5,22</b> · <a href="#produto" style="color:var(--blue);font-weight:700">Ver mais detalhes</a></div>
+                <div class="small" style="margin-top:4px">O desconto pode mudar ao ser combinado com outras promoções.</div></div>
+              <div><span class="lbl">Quantidade</span><div class="opts" role="group" aria-label="Quantidade">
+                <button type="button" aria-pressed="true" data-w="R$45,00" data-p="R$40,50" data-i="9 x de R$5,22">24 unidades</button>
+                <button type="button" aria-pressed="false" data-w="" data-p="R$123,00" data-i="12 x de [VALOR]">66 unidades</button>
+                <button type="button" aria-pressed="false" data-w="" data-p="[PREÇO]" data-i="12 x de [VALOR]">198 unidades</button></div>
+                <div class="small" style="margin-top:6px">No tema, esta escolha aparece como lista suspensa ou botões, conforme a configuração.</div></div>
+              <div class="buy"><div class="qty"><button type="button" aria-label="Diminuir" data-q="-1">−</button><span id="q">1</span><button type="button" aria-label="Aumentar" data-q="1">+</button></div><button class="btn" type="button">COMPRAR</button></div>
+              <div class="ship"><b style="font-size:13.5px">Meios de envio</b><div><label for="cep" style="position:absolute;left:-9999px">CEP</label><input id="cep" placeholder="Seu CEP" inputmode="numeric"><button type="button">CALCULAR</button></div><a href="#produto" class="small" style="color:var(--blue)">Não sei meu CEP</a></div>
+              <div class="b2b">Precisa de volume maior ou rótulo sob medida? <a href="#guia">Peça orçamento para empresas →</a></div>
+            </div>
+          </div>
+        </div>
+        <section class="desc"><div class="w">
+          <div class="stack">
+            <div><h3>Descrição</h3><p>Tubolata Fibralata® de 6 cm de diâmetro por 10 cm de altura, feita em papel reciclado com 1 mm de espessura. Acabamento interno natural, tampa e fundo com fenda para cofrinho.</p><p>Ideal para brindes, festas, eventos, lembrancinhas e ações para empresas.</p></div>
+            <div><h3>Preço por lote</h3><table class="tbl"><thead><tr><th>Lote</th><th>Por unidade</th><th>Total</th></tr></thead><tbody><tr><td>24 unidades</td><td>R$ 1,85</td><td>R$ 45,00</td></tr><tr><td>66 unidades</td><td>R$ 1,86</td><td>R$ 123,00</td></tr><tr><td>198 unidades</td><td><span class="ph">[VALOR]</span></td><td><span class="ph">[VALOR]</span></td></tr></tbody></table></div>
+            <div><h3>Aplicações</h3><div class="tags"><span>Brindes</span><span>Festas e eventos</span><span>Alimentos</span><span>Cosméticos</span><span>Bijuterias</span><span>Brinquedos</span><span>Indústrias</span></div></div>
+          </div>
+          <div><h3>Ficha técnica</h3><table class="tbl"><tbody>
+            <tr><th>Material</th><td>Papel reciclado</td></tr><tr><th>Diâmetro</th><td>6 cm</td></tr><tr><th>Altura</th><td>10 cm</td></tr><tr><th>Espessura</th><td>1 mm</td></tr><tr><th>Interior</th><td>Natural</td></tr><tr><th>Tampa</th><td>Preta ou cinza, com fenda</td></tr><tr><th>Tolerância</th><td>Paredes ±15% · altura ±5%</td></tr><tr><th>Marca</th><td>Fibralata® — marca registrada</td></tr>
+          </tbody></table><p class="small" style="margin-top:10px">Imagem ilustrativa.</p></div>
+        </div></section>
+        <section class="sec"><div class="w"><h2>Produtos relacionados</h2><div class="grid4" data-list="relacionados"></div></div></section>
+      </main>
+
+      <!-- ================= GUIA ================= -->
+      <main class="page" id="p-guia">
+        <div class="w guide">
+          <span class="eb">Cores e ajustes · painel Nuvemshop</span>
+          <h1>Tudo se ajusta nas opções do tema, sem código.</h1>
+          <p class="lead">A estrutura da loja continua a mesma. Mudam as cores, a fonte, o logo, os banners, as fotos e os textos, seguindo o novo site da Fibralata®.</p>
+          <div class="pal">
+            <div class="sw"><i style="background:#ffffff"></i><b>Branco</b><code>#FFFFFF</code>cabeçalho e fundo</div>
+            <div class="sw"><i style="background:#312782"></i><b>Azul-marinho</b><code>#312782</code>botão comprar, menu ativo</div>
+            <div class="sw"><i style="background:#006db0"></i><b>Azul ação</b><code>#006DB0</code>links e selos</div>
+            <div class="sw"><i style="background:#17143d"></i><b>Tinta</b><code>#17143D</code>textos e preços</div>
+            <div class="sw"><i style="background:#f6f4f0"></i><b>Papel</b><code>#F6F4F0</code>faixas e rodapé</div>
+            <div class="sw"><i style="background:#efe5d7"></i><b>Kraft claro</b><code>#EFE5D7</code>aviso B2B</div>
+          </div>
+          <div class="ba">
+            <figure><img src="img/atual-home.jpg" alt="Home atual com cabeçalho rosa" loading="lazy"><figcaption><b>Hoje:</b> cabeçalho rosa #F27180, barra vinho, banner com muito texto.</figcaption></figure>
+            <figure><img src="img/atual-produto.jpg" alt="Produto atual com botão rosa" loading="lazy"><figcaption><b>Hoje:</b> botão, preço e selos em rosa; descrição sem formatação.</figcaption></figure>
+          </div>
+          <div class="rows">
+            <div class="box"><h3>Onde aplicar cada cor</h3><div class="kv">
+              <span>Fundo do cabeçalho e do menu</span><code>#FFFFFF</code>
+              <span>Textos do menu e ícones</span><code>#17143D</code>
+              <span>Barra superior</span><code>#F6F4F0</code>
+              <span>Botões Comprar, Inscrever</span><code>#312782</code>
+              <span>Links, Calcular, selo “-10%”</span><code>#006DB0</code>
+              <span>Preços e títulos</span><code>#17143D</code>
+              <span>Rodapé</span><code>#F6F4F0</code>
+              <span>Aviso de cookies</span><code>#17143D</code>
+            </div></div>
+            <div class="box"><h3>Fonte, imagens e textos</h3><ul>
+              <li><b>Fonte:</b> Manrope, se o tema oferecer; senão manter Montserrat.</li>
+              <li><b>Logo:</b> versão colorida em PNG transparente, sobre fundo branco.</li>
+              <li><b>Banners:</b> 1920 × 600 no desktop e 600 × 600 no celular, fundos claros e mensagem no centro.</li>
+              <li><b>Fotos de produto:</b> quadradas, fundo claro e neutro, mesma escala.</li>
+              <li><b>Boas-vindas:</b> trocar “há cerca de 30 anos” pelo texto alinhado aos 60 anos de know-how.</li>
+              <li><b>Contato:</b> usar um único WhatsApp oficial em todos os canais.</li>
+            </ul></div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="ft">
+        <div class="cmyk" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <div class="w">
+          <div><img src="img/logo-cor.png" alt="Fibralata®" width="150" height="36" style="width:150px;margin-bottom:12px"><span>Tubolatas de papel Kraft em pequenas tiragens. Uma marca da Gráfica Studio A.</span></div>
+          <div><h4>Departamentos</h4><ul><li>Início</li><li>Produtos</li><li>Quem Somos</li><li>Como Comprar</li><li>Trocas e Devoluções</li></ul></div>
+          <div><h4>Entre em contato</h4><ul><li>WhatsApp <span class="ph">[NÚMERO OFICIAL]</span></li><li>vendas@fibralata.com.br</li><li>Rua Rio Grande do Norte, 262 – Vila São Pedro – Santo André/SP</li></ul></div>
+          <div><h4>Pagamento e envio</h4><div class="chips"><span>Pix</span><span>Boleto</span><span>Cartão até 12x</span><span>Correios</span></div></div>
+          <div class="bt"><span>© 2026 <span class="ph">[RAZÃO SOCIAL]</span> · Fibralata® é marca registrada.</span><span>Loja Nuvemshop</span></div>
+        </div>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var P={
+    ofertas:[
+      ['Embalagem Tubolata para Cofrinho da Fibralata','cofrinho-1','-10%','R$45,00','R$40,50','9 x de R$5,22',1],
+      ['Embalagem Tubolata para Canecas','com-rotulo-pequena-tiragem','-10%','R$118,61','R$106,75','12 x de R$10,84'],
+      ['Fibralata Sem Rótulo 10 cm de Diâmetro','tubolata-sem-rotulo-10x17','-10%','R$62,91','R$56,62','12 x de R$5,75'],
+      ['Fibralata Sem Rótulo 16,5 cm x 7 cm de Alt.','tubolata-sem-rotulo-16-5x7','-10%','R$114,36','R$102,92','12 x de R$10,45']],
+    destaques:[
+      ['Fibralata Sem Rótulo 6 cm x 22 cm alt.','tubolata-sem-rotulo-6x22','-10%','R$168,67','R$151,80','12 x de R$15,42'],
+      ['Fibralata Sem Rótulo 6 cm x 10 cm alt.','tubolata-sem-rotulo-6x10','-10%','R$100,76','R$90,68','12 x de R$9,21'],
+      ['Fibralata Sem Rótulo 12,8 cm x 12 cm alt.','tubolata-sem-rotulo-12-8x12','','','[PREÇO]','12 x de [VALOR]'],
+      ['Fibralata Sem Rótulo 9,1 cm x 9 cm alt.','tubolata-sem-rotulo-9-1x9','esg','','[PREÇO]','Avise-me quando chegar']],
+    relacionados:[
+      ['Fibralata Sem Rótulo 6 cm x 22 cm alt.','tubolata-sem-rotulo-6x22','-10%','R$168,67','R$151,80','12 x de R$15,42'],
+      ['Fibralata Sem Rótulo 6 cm x 10 cm alt.','tubolata-sem-rotulo-6x10','-10%','R$100,76','R$90,68','12 x de R$9,21'],
+      ['Fibralata Sem Rótulo 10 cm de Diâmetro','tubolata-sem-rotulo-10x17','-10%','R$62,91','R$56,62','12 x de R$5,75'],
+      ['Embalagem Tubolata para Canecas','com-rotulo-pequena-tiragem','-10%','R$118,61','R$106,75','12 x de R$10,84']]
+  };
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  document.querySelectorAll('[data-list]').forEach(function(el){
+    el.innerHTML=P[el.dataset.list].map(function(p){
+      var badge=p[2]==='esg'?'<span class="esg">ESGOTADO</span>':(p[2]?'<span class="off">'+p[2]+'</span>':'');
+      var price=/\[/.test(p[4])?'<span class="now"><span class="ph">'+esc(p[4])+'</span></span>':'<span class="now">'+esc(p[4])+'</span>';
+      return '<a class="card" href="#produto" data-go="produto"><div class="pi"><img src="img/'+p[1]+'.jpg" alt="'+esc(p[0])+'" loading="lazy">'+badge+'</div><p>'+esc(p[0])+'</p><div class="pr">'+(p[3]?'<span class="was">'+p[3]+'</span>':'')+price+'</div><span class="inst">'+esc(p[5])+'</span></a>';
+    }).join('');
+  });
+
+  var caps={home:'<b>Home</b> · mesma ordem de seções da loja atual, com a identidade do novo site',produto:'<b>Página de produto</b> · exemplo com o cofrinho; descrição organizada em blocos',guia:'<b>Cores e ajustes</b> · o que configurar no painel da Nuvemshop'};
+  function go(pg){
+    if(!caps[pg]) pg='home';
+    document.querySelectorAll('.page').forEach(function(p){p.classList.toggle('on',p.id==='p-'+pg)});
+    document.querySelectorAll('[data-page]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.page===pg?'true':'false')});
+    document.getElementById('cap').innerHTML=caps[pg];
+    window.scrollTo(0,0);
+  }
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('[data-page],[data-go]');
+    if(t){ var pg=t.dataset.page||t.dataset.go; if(t.tagName==='A') e.preventDefault(); try{history.replaceState(null,'','#'+pg)}catch(err){} go(pg); return; }
+    var a=e.target.closest('a[href^="#"]'); if(a){ e.preventDefault(); var h=a.getAttribute('href').slice(1); if(caps[h]) go(h); }
+  });
+  go((location.hash||'#home').slice(1));
+
+  var dev=document.getElementById('device');
+  document.querySelectorAll('[data-dev]').forEach(function(b){b.addEventListener('click',function(){
+    var m=b.dataset.dev==='mobile'; dev.classList.toggle('is-mobile',m);
+    document.querySelectorAll('[data-dev]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+  })});
+
+  // slider
+  var slides=[].slice.call(document.querySelectorAll('.slide')),dots=[].slice.call(document.querySelectorAll('.dots button')),cur=0,timer;
+  function show(i){cur=(i+slides.length)%slides.length;slides.forEach(function(s,k){s.classList.toggle('on',k===cur)});dots.forEach(function(d,k){d.setAttribute('aria-selected',k===cur?'true':'false')})}
+  function play(){clearInterval(timer);if(!matchMedia('(prefers-reduced-motion: reduce)').matches)timer=setInterval(function(){show(cur+1)},5500)}
+  document.querySelectorAll('[data-sl]').forEach(function(b){b.addEventListener('click',function(){show(cur+ +b.dataset.sl);play()})});
+  dots.forEach(function(d,k){d.addEventListener('click',function(){show(k);play()})});
+  play();
+
+  // produto: galeria, lotes, quantidade
+  document.querySelectorAll('.thumbs button').forEach(function(b){b.addEventListener('click',function(){
+    document.getElementById('mainimg').src=b.dataset.img;
+    document.querySelectorAll('.thumbs button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+  })});
+  document.querySelectorAll('.opts button').forEach(function(b){b.addEventListener('click',function(){
+    document.querySelectorAll('.opts button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+    document.getElementById('price').textContent=b.dataset.p; document.getElementById('was').textContent=b.dataset.w; document.getElementById('inst').textContent=b.dataset.i;
+  })});
+  var q=1;document.querySelectorAll('[data-q]').forEach(function(b){b.addEventListener('click',function(){q=Math.max(1,q+ +b.dataset.q);document.getElementById('q').textContent=q})});
+})();
+</script>
+
+</body>
+</html>

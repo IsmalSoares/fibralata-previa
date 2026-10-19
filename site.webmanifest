@@ -1,0 +1,26 @@
+{
+ "name": "Fibralata® — Tubolatas de papel",
+ "short_name": "Fibralata",
+ "lang": "pt-BR",
+ "start_url": "/",
+ "display": "browser",
+ "background_color": "#ffffff",
+ "theme_color": "#312782",
+ "icons": [
+  {
+   "src": "/assets/logo/apple-touch-icon.png",
+   "sizes": "180x180",
+   "type": "image/png"
+  },
+  {
+   "src": "/assets/logo/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  },
+  {
+   "src": "/favicon.svg",
+   "type": "image/svg+xml",
+   "sizes": "any"
+  }
+ ]
+}
